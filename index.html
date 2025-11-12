@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KYYS 🤍 ELIN</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#08061a; --bg2:#1a0f3b;
+  --accent:#a783ff; --accent2:#c7b3ff; --muted:rgba(230,238,251,0.6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  color:#e7f2ff;
+  background:radial-gradient(circle at 50% 20%,var(--bg2) 0%,var(--bg1) 100%);
+  display:flex;flex-direction:column;align-items:center;min-height:100vh;overflow-x:hidden;
+}
+
+/* SPLASH */
+.intro{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at center,var(--bg2),var(--bg1));
+  z-index:9999;color:white;font-size:2.5rem;letter-spacing:4px;
+  font-weight:800;text-shadow:0 0 18px var(--accent2),0 0 34px var(--accent);
+  animation:glowPulse 2.8s infinite alternate; opacity:1; transition:opacity .9s ease;
+}
+.intro.hide{opacity:0;pointer-events:none}
+@keyframes glowPulse{from{text-shadow:0 0 10px var(--accent2),0 0 20px var(--accent)}to{text-shadow:0 0 25px white,0 0 45px var(--accent2)}}
+
+.container{width:95%;max-width:920px;margin-top:18px;text-align:center}
+.topbar{
+  height:56px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.03);border-radius:10px;color:var(--accent);
+  letter-spacing:2px;font-size:22px;box-shadow:0 6px 18px rgba(2,6,23,0.6)
+}
+
+.section-title{margin-top:25px;font-size:20px;color:var(--accent);font-weight:700}
+.preview-card{width:100%;border-radius:14px;padding:10px;background:rgba(255,255,255,0.03);margin-top:8px}
+.preview-canvas{width:100%;height:auto;border-radius:10px;display:block;background:#020214;cursor:pointer}
+
+.footer{margin:25px 0;color:var(--muted);font-size:13px;font-weight:700}
+.loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(1,4,10,0.7);backdrop-filter:blur(6px);visibility:hidden;opacity:0;transition:opacity .18s,visibility .18s;z-index:9998}
+.loading.show{visibility:visible;opacity:1}
+.loader{padding:18px 24px;border-radius:12px;text-align:center;background:rgba(255,255,255,0.03);box-shadow:0 0 20px rgba(100,120,255,0.12)}
+.loader .title{color:var(--accent);font-weight:800;margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="intro" id="intro">KYYS <span style="color:var(--accent)">🤍</span> ELIN</div>
+
+<audio id="bgMusic" preload="auto">
+  <source src="intro.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="mainContent" style="display:none;">
+  <div class="topbar">KYYS 🤍 ELIN</div>
+
+  <div class="section-title">AFTER</div>
+  <div class="preview-card">
+    <canvas id="previewAfter" class="preview-canvas" width="720" height="360"></canvas>
+  </div>
+
+  <div class="footer">Made with 🤍 by <strong>KYYS</strong></div>
+</div>
+
+<div class="loading" id="loading">
+  <div class="loader">
+    <div class="title">✨ Sedang memproses...</div>
+  </div>
+</div>
+
+<script>
+const intro=document.getElementById('intro');
+const main=document.getElementById('mainContent');
+const bgMusic=document.getElementById('bgMusic');
+const previewAfter=document.getElementById('previewAfter');
+const afterCtx=previewAfter.getContext('2d');
+
+function tryPlayAudio(){
+  bgMusic.play().catch(()=>{
+    document.addEventListener('click',()=>bgMusic.play().catch(()=>{}),{once:true});
+  });
+}
+bgMusic.addEventListener('ended',()=>{bgMusic.currentTime=0;bgMusic.play().catch(()=>{});});
+
+window.addEventListener('load',()=>{
+  tryPlayAudio();
+  setTimeout(()=>{
+    intro.classList.add('hide');
+    setTimeout(()=>{intro.remove();main.style.display='block';},900);
+  },3000);
+});
+
+// placeholder gambar gelap (biar gak kosong)
+afterCtx.fillStyle='#0a0a12';
+afterCtx.fillRect(0,0,720,360);
+afterCtx.fillStyle='#a783ff';
+afterCtx.font='bold 26px Orbitron';
+afterCtx.textAlign='center';
+afterCtx.fillText('Preview Akan Muncul Di Sini',360,190);
+</script>
+</body>
+</html>
