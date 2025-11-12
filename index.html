@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KYYS 🤍 ELIN — UHD 4K</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#07040f;
+    --card:#0e0b18;
+    --accent:#9b6cff;
+    --accent-2:#cdb8ff;
+    --muted:rgba(230,230,245,0.6);
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--white);
+    font-family:"Orbitron",system-ui,-apple-system,Segoe UI,Roboto,"Poppins",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    justify-content:center;
+    padding:24px;
+  }
+
+  /* SPLASH / INTRO */
+  #intro{
+    position:fixed;inset:0;
+    background:#000;
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999;
+  }
+  #intro .title{
+    font-size:36px;color:var(--white);
+    font-weight:800;letter-spacing:4px;
+    text-align:center;
+    text-shadow:0 0 10px #fff, 0 0 30px var(--accent);
+    animation:glow 1s infinite steps(2,start);
+  }
+  @keyframes glow{
+    0%{filter:drop-shadow(0 0 8px rgba(155,108,255,0.6))}
+    100%{filter:drop-shadow(0 0 30px rgba(205,184,255,0.9))}
+  }
+
+  /* LAYOUT */
+  .wrap{width:100%;max-width:980px}
+  .topbar{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:12px;border-radius:12px;text-align:center;color:var(--accent);
+    font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(0,0,0,0.6)
+  }
+
+  .card{
+    margin-top:18px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border-radius:14px;padding:18px;box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  }
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .file-btn{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#08030a;font-weight:800;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;
+  }
+  .file-name{color:var(--muted);font-size:13px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .action {
+    margin-top:14px;display:flex;gap:12px;flex-direction:column;align-items:center;
+  }
+  .btn{
+    width:92%;max-width:520px;padding:14px;border-radius:12px;border:none;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#06020a;font-weight:800;font-size:16px;cursor:pointer;font-family:"Orbitron",sans-serif;
+    box-shadow:0 12px 36px rgba(150,110,255,0.14);
+  }
+
+  .btn:active{transform:translateY(2px) scale(.997)}
+
+  /* PREVIEWS (AFTER on top, BEFORE below) */
+  .previews{margin-top:22px;display:flex;flex-direction:column;gap:22px}
+  .panel{background:var(--card);border-radius:12px;padding:12px;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.6)}
+  .label{
+    position:absolute;left:50%;transform:translateX(-50%);top:8px;
+    font-family:"Poppins",sans-serif;font-weight:700;font-size:18px;
+    color:var(--white);text-shadow:0 0 10px rgba(155,108,255,0.14);
+    pointer-events:none;z-index:5;padding:6px 12px;border-radius:6px;backdrop-filter:blur(2px);
+  }
+
+  .canvas-wrap{display:flex;align-items:center;justify-content:center;padding:42px 12px}
+  canvas{max-width:100%;height:auto;border-radius:8px;background:#000;display:block}
+
+  .hidden{display:none !important}
+
+  .footer{text-align:center;color:var(--muted);margin-top:26px;font-weight:700}
+
+  /* loading overlay */
+  .loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px);visibility:hidden;opacity:0;transition:opacity .18s,visibility .18s;z-index:9998}
+  .loading.show{visibility:visible;opacity:1}
+  .loader{background:rgba(255,255,255,0.03);padding:16px 22px;border-radius:10px;color:var(--accent);font-weight:700;box-shadow:0 6px 30px rgba(120,80,255,0.14)}
+
+  /* responsive */
+  @media (max-width:760px){
+    .label{font-size:16px;top:6px}
+    .canvas-wrap{padding:20px 6px}
+  }
+</style>
+</head>
+<body>
+  <!-- Intro (3s) -->
+  <div id="intro"><div class="title">KYYS 🤍 ELIN</div></div>
+
+  <!-- Audio file must be named intro.mp3 and placed in same folder as this HTML -->
+  <audio id="introAudio" src="intro.mp3" preload="auto" autoplay></audio>
+
+  <div class="wrap" id="app" aria-hidden="true" style="display:none">
+    <div class="topbar">KYYS 🤍 ELIN</div>
+
+    <div class="card">
+      <div style="text-align:center;color:var(--muted);font-weight:700;margin-bottom:8px">Upload 1 foto (Before)</div>
+
+      <div class="row" style="justify-content:center">
+        <label class="file-btn" for="fileInput">Pilih Foto</label>
+        <input id="fileInput" type="file" accept="image/*" style="display:none" />
+        <div class="file-name" id="fileName">Belum ada file</div>
+      </div>
+
+      <div class="action">
+        <button id="uhdBtn" class="btn">UHD</button>
+        <button id="downloadBtn" class="btn hidden">DOWNLOAD</button>
+      </div>
+    </div>
+
+    <div class="previews" id="previews" aria-live="polite">
+      <!-- AFTER (generated by web) -->
+      <div class="panel hidden" id="afterPanel">
+        <div class="label" id="afterLabel">AFTER</div>
+        <div class="canvas-wrap"><canvas id="afterCanvas"></canvas></div>
+      </div>
+
+      <!-- BEFORE (original uploaded) -->
+      <div class="panel hidden" id="beforePanel">
+        <div class="label" id="beforeLabel">BEFORE</div>
+        <div class="canvas-wrap"><canvas id="beforeCanvas"></canvas></div>
+      </div>
+    </div>
+
+    <div class="footer">Made with 🤍 by <strong>KYYS</strong></div>
+  </div>
+
+  <div class="loading" id="loading"><div class="loader">Sabar yaa bubb 🤍</div></div>
+
+<script>
+/*
+ Behavior:
+ - Single upload -> render "before" preview (ke canvas) and show BEFORE panel.
+ - Click UHD -> create 4K offscreen canvas, draw source image centered (imageSmoothingQuality=high)
+   -> create blob and also render scaled preview into afterCanvas -> show AFTER panel on top
+ - Download button becomes visible after AFTER generated (downloads PNG)
+ - Intro audio tries autoplay; if blocked, resume on first gesture. Intro shown 3s then removed.
+ - Labels "AFTER"/"BEFORE" are centered above each panel (bold Poppins via CSS)
+*/
+
+// Elements
+const intro = document.getElementById('intro');
+const introAudio = document.getElementById('introAudio');
+const app = document.getElementById('app');
+const fileInput = document.getElementById('fileInput');
+const fileNameEl = document.getElementById('fileName');
+const uhdBtn = document.getElementById('uhdBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const loading = document.getElementById('loading');
+
+const beforePanel = document.getElementById('beforePanel');
+const afterPanel = document.getElementById('afterPanel');
+const beforeCanvas = document.getElementById('beforeCanvas');
+const afterCanvas = document.getElementById('afterCanvas');
+const beforeCtx = beforeCanvas.getContext('2d');
+const afterCtx = afterCanvas.getContext('2d');
+
+let sourceImage = null;   // Image element of uploaded file
+let resultBlob = null;    // Blob of 4K result
+
+// autoplay helper
+function tryPlayAudio(){
+  introAudio.loop = true;
+  introAudio.volume = 0.7;
+  introAudio.play().catch(()=>{
+    const resume = ()=>{ introAudio.play().catch(()=>{}); document.removeEventListener('click', resume); document.removeEventListener('touchstart', resume); };
+    document.addEventListener('click', resume, {passive:true});
+    document.addEventListener('touchstart', resume, {passive:true});
+  });
+}
+
+// show intro 3s then app
+window.addEventListener('load', ()=>{
+  tryPlayAudio();
+  setTimeout(()=> {
+    if(intro && intro.parentNode) intro.parentNode.removeChild(intro);
+    app.style.display = 'block';
+    app.setAttribute('aria-hidden','false');
+  }, 3000);
+});
+
+// file input
+document.querySelector('.file-btn').addEventListener('click', ()=> fileInput.click());
+
+fileInput.addEventListener('change', async (e)=>{
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  fileNameEl.textContent = f.name;
+  // create object URL and load into Image
+  const url = URL.createObjectURL(f);
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = ()=>{
+    sourceImage = img;
+    renderPreviewCanvas(img, beforeCanvas, beforeCtx);
+    beforePanel.classList.remove('hidden');
+    // hide after if previously showed
+    afterPanel.classList.add('hidden');
+    downloadBtn.classList.add('hidden');
+    // free object URL on unload (kept until unload)
+  };
+  img.onerror = ()=>{
+    alert('Gagal memuat gambar (CORS/format). Coba file lain.');
+    try{ URL.revokeObjectURL(url); }catch(e){}
+  };
+  img.src = url;
+});
+
+// helper to render image into canvas preserving aspect ratio, using "contain"
+function renderPreviewCanvas(img, canvas, ctx){
+  // choose a preview max size based on viewport
+  const maxW = Math.min(1280, window.innerWidth - 80);
+  const maxH = Math.min(720, Math.round(window.innerHeight * 0.48));
+  const ratio = img.naturalWidth / img.naturalHeight;
+  let w = img.naturalWidth, h = img.naturalHeight;
+  const scale = Math.min(maxW / w, maxH / h, 1);
+  w = Math.round(w * scale);
+  h = Math.round(h * scale);
+  canvas.width = w; canvas.height = h;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0,0,w,h);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  // center draw
+  ctx.drawImage(img, 0,0, img.naturalWidth, img.naturalHeight, 0,0, w, h);
+}
+
+// create 4K upscale (draw to 3840x2160) then set preview
+function create4KFromImage(img){
+  return new Promise((resolve,reject)=>{
+    try{
+      const off = document.createElement('canvas');
+      off.width = 3840; off.height = 2160;
+      const ctx = off.getContext('2d');
+      ctx.fillStyle = '#000'; ctx.fillRect(0,0,off.width,off.height);
+
+      const sw = img.naturalWidth || img.width;
+      const sh = img.naturalHeight || img.height;
+      const scale = Math.min(off.width / sw, off.height / sh);
+      const dw = Math.round(sw * scale);
+      const dh = Math.round(sh * scale);
+      const dx = Math.round((off.width - dw)/2);
+      const dy = Math.round((off.height - dh)/2);
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0,0, sw, sh, dx, dy, dw, dh);
+
+      off.toBlob((b)=>{
+        if(!b) return reject(new Error('Gagal membuat blob'));
+        resolve({canvas: off, blob: b});
+      }, 'image/png');
+    }catch(err){ reject(err); }
+  });
+}
+
+// handle UHD click
+uhdBtn.addEventListener('click', async ()=>{
+  if(!sourceImage){
+    alert('Silakan pilih foto Before terlebih dahulu.');
+    return;
+  }
+  // show loading
+  loading.classList.add('show');
+  try{
+    // create 4K and blob
+    const {canvas: offscreen, blob} = await create4KFromImage(sourceImage);
+    resultBlob = blob;
+    // render preview (downscale) into afterCanvas
+    renderPreviewCanvas(offscreen, afterCanvas, afterCtx);
+    // show after panel on top
+    afterPanel.classList.remove('hidden');
+    // ensure before still visible (below)
+    beforePanel.classList.remove('hidden');
+    // show download
+    downloadBtn.classList.remove('hidden');
+  }catch(err){
+    console.error(err);
+    alert('Gagal proses UHD: ' + (err.message || err));
+  }finally{
+    loading.classList.remove('show');
+  }
+});
+
+// download handler
+downloadBtn.addEventListener('click', ()=>{
+  if(!resultBlob){
+    alert('Belum ada hasil untuk di-download');
+    return;
+  }
+  const url = URL.createObjectURL(resultBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'kyys_elin_uhd.png';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 2000);
+});
+
+// cleanup blob URLs on unload
+window.addEventListener('beforeunload', ()=>{
+  // nothing to revoke explicitly here except those created by file input (browser clears)
+});
+</script>
+</body>
+  </html>
