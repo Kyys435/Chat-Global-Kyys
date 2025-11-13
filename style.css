@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0014, #2d014f);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+#splash {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  animation: fadeOut 2.5s ease-in forwards;
+  animation-delay: 2.5s;
+}
+
+#splash h1 {
+  font-size: 3rem;
+  color: #b26bff;
+  text-shadow: 0 0 20px #a54dff;
+}
+
+.hidden {
+  display: none;
+}
+
+.chat-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: rgba(40, 0, 75, 0.7);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-box {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: rgba(10, 0, 25, 0.6);
+}
+
+.message {
+  padding: 0.7rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 15px;
+  max-width: 75%;
+  width: fit-content;
+  animation: glow 3s infinite;
+}
+
+.message.user {
+  background: #6a00ff;
+  margin-left: auto;
+  text-align: right;
+}
+
+.message.owner {
+  background: #240052;
+  text-align: left;
+}
+
+.chat-input {
+  display: flex;
+  background: rgba(20, 0, 40, 0.8);
+  padding: 0.5rem;
+}
+
+.chat-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+  padding: 0.5rem;
+}
+
+.chat-input button {
+  background: #6a00ff;
+  border: none;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.chat-input button:hover {
+  background: #9a4dff;
+}
+
+.settings {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(20, 0, 40, 0.9);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 0 20px #6a00ff;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 10px #9a4dff; }
+  50% { box-shadow: 0 0 25px #9a4dff; }
+}
