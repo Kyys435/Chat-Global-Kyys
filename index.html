@@ -1,285 +1,109 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kyys Cool🥶</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="splash">
-    <h1>Kyys Cool🥶</h1>
-  </div>
-
-  <div class="chat-container hidden">
-    <header>
-      <h2>Chat Global 💬</h2>
-      <button id="settingsBtn">⚙️</button>
-    </header>
-
-    <div class="chat-box" id="chatBox">
-      <div class="message owner">Selamat datang di Kyys Cool🥶!</div>
-      <div class="message user">Halo semuanya!</div>
-    </div>
-
-    <div class="chat-input">
-      <input type="text" id="msgInput" placeholder="Ketik pesan..." />
-      <button id="sendBtn">📤</button>
-    </div>
-  </div>
-
-  <!-- ⚙️ Pengaturan -->
-  <div id="settings" class="settings hidden">
-    <h3>🎵 Pengaturan Suara</h3>
-    <label>Volume: <span id="volumeValue">100%</span></label>
-    <input type="range" id="volumeSlider" min="0" max="100" value="100">
-    <button id="closeSettings">Tutup</button>
-  </div>
-
-  <audio id="bgMusic" src="intro.mp3" autoplay loop></audio>
-
-  <script src="script.js"></script>
-</body>
-</html>  </a>
-</div>
-
-<script>
-  setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-  }, 3000);
-
-  const uhdBtn = document.getElementById("uhdBtn");
-  const fileInput = document.getElementById("fileInput");
-  const downloadLink = document.getElementById("downloadLink");
-
-  uhdBtn.onclick = async () => {
-    const file = fileInput.files[0];
-    if (!file) return alert("📤 Pilih gambar JPG dulu!");
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    uhdBtn.innerText = "⏳ Memproses ke UHD...";
-    try {
-      const res = await fetch("http://localhost:5000/upscale", {
-        method: "POST",
-        body: formData
-      });
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      downloadLink.href = url;
-      downloadLink.style.display = "block";
-      alert("✅ Gambar berhasil di-HD-kan (6x). Klik DOWNLOAD.");
-    } catch (err) {
-      alert("❌ Terjadi kesalahan server.");
-    } finally {
-      uhdBtn.innerText = "UHD (4K)";
-    }
-  };
-
-  window.addEventListener("click", () => {
-    document.getElementById("intro").play().catch(() => {});
-  });
-</script>
-</body>
-</html>  </a>
-</div>
-
-<script>
-  setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-  }, 3000);
-
-  const uhdBtn = document.getElementById("uhdBtn");
-  const fileInput = document.getElementById("fileInput");
-  const downloadLink = document.getElementById("downloadLink");
-
-  uhdBtn.onclick = async () => {
-    const file = fileInput.files[0];
-    if (!file) return alert("📤 Pilih gambar JPG dulu!");
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    uhdBtn.innerText = "⏳ Memproses ke UHD...";
-    try {
-      const res = await fetch("http://localhost:5000/upscale", {
-        method: "POST",
-        body: formData
-      });
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      downloadLink.href = url;
-      downloadLink.style.display = "block";
-      alert("✅ Gambar berhasil di-HD-kan (6x). Klik DOWNLOAD.");
-    } catch (err) {
-      alert("❌ Terjadi kesalahan server.");
-    } finally {
-      uhdBtn.innerText = "UHD (4K)";
-    }
-  };
-
-  window.addEventListener("click", () => {
-    document.getElementById("intro").play().catch(() => {});
-  });
-</script>
-</body>
-</html>    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    color:#08030a;font-weight:800;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;
-  }
-  .file-name{color:var(--muted);font-size:13px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-  .action {
-    margin-top:14px;display:flex;gap:12px;flex-direction:column;align-items:center;
-  }
-  .btn{
-    width:92%;max-width:520px;padding:14px;border-radius:12px;border:none;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    color:#06020a;font-weight:800;font-size:16px;cursor:pointer;font-family:"Orbitron",sans-serif;
-    box-shadow:0 12px 36px rgba(150,110,255,0.14);
-  }
-
-  .btn:active{transform:translateY(2px) scale(.997)}
-
-  /* PREVIEWS (AFTER on top, BEFORE below) */
-  .previews{margin-top:22px;display:flex;flex-direction:column;gap:22px}
-  .panel{background:var(--card);border-radius:12px;padding:12px;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.6)}
-  .label{
-    position:absolute;left:50%;transform:translateX(-50%);top:8px;
-    font-family:"Poppins",sans-serif;font-weight:700;font-size:18px;
-    color:var(--white);text-shadow:0 0 10px rgba(155,108,255,0.14);
-    pointer-events:none;z-index:5;padding:6px 12px;border-radius:6px;backdrop-filter:blur(2px);
-  }
-
-  .canvas-wrap{display:flex;align-items:center;justify-content:center;padding:42px 12px}
-  canvas{max-width:100%;height:auto;border-radius:8px;background:#000;display:block}
-
-  .hidden{display:none !important}
-
-  .footer{text-align:center;color:var(--muted);margin-top:26px;font-weight:700}
-
-  /* loading overlay */
-  .loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px);visibility:hidden;opacity:0;transition:opacity .18s,visibility .18s;z-index:9998}
-  .loading.show{visibility:visible;opacity:1}
-  .loader{background:rgba(255,255,255,0.03);padding:16px 22px;border-radius:10px;color:var(--accent);font-weight:700;box-shadow:0 6px 30px rgba(120,80,255,0.14)}
-
-  /* responsive */
-  @media (max-width:760px){
-    .label{font-size:16px;top:6px}
-    .canvas-wrap{padding:20px 6px}
-  }
-</style>
-</head>
-<body>
-  <!-- Intro (3s) -->
-  <div id="intro"><div class="title">KYYS 🤍 ELIN</div></div>
-
-  <!-- Audio file must be named intro.mp3 and placed in same folder as this HTML -->
-  <audio id="introAudio" src="intro.mp3" preload="auto" autoplay></audio>
-
-  <div class="wrap" id="app" aria-hidden="true" style="display:none">
-    <div class="topbar">KYYS 🤍 ELIN</div>
-
-    <div class="card">
-      <div style="text-align:center;color:var(--muted);font-weight:700;margin-bottom:8px">Upload 1 foto (Before)</div>
-
-      <div class="row" style="justify-content:center">
-        <label class="file-btn" for="fileInput">Pilih Foto</label>
-        <input id="fileInput" type="file" accept="image/*" style="display:none" />
-        <div class="file-name" id="fileName">Belum ada file</div>
-      </div>
-
-      <div class="action">
-        <button id="uhdBtn" class="btn">UHD</button>
-        <button id="downloadBtn" class="btn hidden">DOWNLOAD</button>
-      </div>
-    </div>
-
-    <div class="previews" id="previews" aria-live="polite">
-      <!-- AFTER (generated by web) -->
-      <div class="panel hidden" id="afterPanel">
-        <div class="label" id="afterLabel">AFTER</div>
-        <div class="canvas-wrap"><canvas id="afterCanvas"></canvas></div>
-      </div>
-
-      <!-- BEFORE (original uploaded) -->
-      <div class="panel hidden" id="beforePanel">
-        <div class="label" id="beforeLabel">BEFORE</div>
-        <div class="canvas-wrap"><canvas id="beforeCanvas"></canvas></div>
-      </div>
-    </div>
-
-    <div class="footer">Made with 🤍 by <strong>KYYS</strong></div>
-  </div>
-
-  <div class="loading" id="loading"><div class="loader">Sabar yaa bubb 🤍</div></div>
-
-<script>
-/*
- Behavior:
- - Single upload -> render "before" preview (ke canvas) and show BEFORE panel.
- - Click UHD -> create 4K offscreen canvas, draw source image centered (imageSmoothingQuality=high)
-   -> create blob and also render scaled preview into afterCanvas -> show AFTER panel on top
- - Download button becomes visible after AFTER generated (downloads PNG)
- - Intro audio tries autoplay; if blocked, resume on first gesture. Intro shown 3s then removed.
- - Labels "AFTER"/"BEFORE" are centered above each panel (bold Poppins via CSS)
-*/
-
-// Elements
-const intro = document.getElementById('intro');
-const introAudio = document.getElementById('introAudio');
-const app = document.getElementById('app');
-const fileInput = document.getElementById('fileInput');
-const fileNameEl = document.getElementById('fileName');
-const uhdBtn = document.getElementById('uhdBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const loading = document.getElementById('loading');
-
-const beforePanel = document.getElementById('beforePanel');
-const afterPanel = document.getElementById('afterPanel');
-const beforeCanvas = document.getElementById('beforeCanvas');
-const afterCanvas = document.getElementById('afterCanvas');
-const beforeCtx = beforeCanvas.getContext('2d');
-const afterCtx = afterCanvas.getContext('2d');
-
-let sourceImage = null;   // Image element of uploaded file
-let resultBlob = null;    // Blob of 4K result
-
-// autoplay helper
-function tryPlayAudio(){
-  introAudio.loop = true;
-  introAudio.volume = 0.7;
-  introAudio.play().catch(()=>{
-    const resume = ()=>{ introAudio.play().catch(()=>{}); document.removeEventListener('click', resume); document.removeEventListener('touchstart', resume); };
-    document.addEventListener('click', resume, {passive:true});
-    document.addEventListener('touchstart', resume, {passive:true});
-  });
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat Tahun Baru Sayang ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0b0b15;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      color: white;
+      text-align: center;
+    }/* Love animation */
+.love {
+  position: fixed;
+  top: -10px;
+  font-size: 22px;
+  color: white;
+  animation: fall linear infinite;
 }
 
-// show intro 3s then app
-window.addEventListener('load', ()=>{
-  tryPlayAudio();
-  setTimeout(()=> {
-    if(intro && intro.parentNode) intro.parentNode.removeChild(intro);
-    app.style.display = 'block';
-    app.setAttribute('aria-hidden','false');
-  }, 3000);
-});
+@keyframes fall {
+  0% { transform: translateY(-10px); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
 
-// file input
-document.querySelector('.file-btn').addEventListener('click', ()=> fileInput.click());
+h1 {
+  margin-top: 80px;
+  font-size: 2.2rem;
+  color: #ffffff;
+}
 
-fileInput.addEventListener('change', async (e)=>{
-  const f = e.target.files && e.target.files[0];
-  if(!f) return;
-  fileNameEl.textContent = f.name;
-  // create object URL and load into Image
-  const url = URL.createObjectURL(f);
-  const img = new Image();
+p {
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+button {
+  margin-top: 25px;
+  padding: 12px 22px;
+  border: none;
+  background: #a855f7;
+  color: white;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #c084fc;
+  transform: scale(1.07);
+}
+
+  .splash {
+  font-size: 2.4rem;
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff, 0 0 20px #c084fc;
+  animation: glowFlash 1.3s infinite;
+  margin-top: 80px;
+}
+
+@keyframes glowFlash {
+  0% { opacity: 0.4; text-shadow: 0 0 4px #fff; }
+  50% { opacity: 1; text-shadow: 0 0 14px #ffffff, 0 0 26px #c084fc; }
+  100% { opacity: 0.4; text-shadow: 0 0 4px #fff; }
+}
+
+  </style>
+</head>
+<body>  <h1 class="splash">Selamat Tahun Baru Sayang 🎆❤️</h1>
+  <p>Aku berharap tahun ini jadi tahun terbaik buat kita berdua. Makasih udah ada di hidup aku 💜</p>  <!-- Button kirim pesan --><button onclick="sendMsg()">Kirim Pesan ke Aku</button>
+
+  <script>
+    // Auto generate falling hearts
+    function createLove() {
+      const love = document.createElement('div');
+      love.classList.add('love');
+      love.innerHTML = '🤍';
+      love.style.left = Math.random() * 100 + 'vw';
+      love.style.animationDuration = (3 + Math.random() * 4) + 's';
+      document.body.appendChild(love);
+      setTimeout(() => love.remove(), 7000);
+    }
+    setInterval(createLove, 250);
+
+    // Auto send text ke nomor kamu
+    function sendMsg() {
+      const pesan = encodeURIComponent("Selamat Tahun Baru sayang, aku buat web ini khusus buat kamu ❤️");
+      const nomor = "6285779083591"; // ganti nomor kamu
+      window.location.href = `https://wa.me/${nomor}?text=${pesan}`;
+    }
+
+    // AUTO SEND saat web dibuka (hapus jika tidak mau)
+    setTimeout(() => {
+      const pesan = encodeURIComponent("Aku sayang kamu. Selamat Tahun Baru ❤️");
+      const nomor = "6285779083591"; // ganti nomor kamu
+      window.location.href = `https://wa.me/${nomor}?text=${pesan}`;
+    }, 2000);
+
+  </script><audio id="bgm" src="intro.mp3" autoplay loop></audio>
+
+</body>
+</html>const img = new Image();
   img.crossOrigin = "anonymous";
   img.onload = ()=>{
     sourceImage = img;
